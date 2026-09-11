@@ -1,6 +1,56 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Location QR codes</title><link rel="stylesheet" href="/Treasury/styles.css"></head><body><main><header class="hero"><p class="eyebrow">ZAFRIRZ.GITHUB.IO</p><h1>Location QR codes</h1><p class="intro">Scan a code to open its matching page.</p><a class="print-link" href="/Treasury/print.html">Print compact QR sheet</a></header><section class="qr-grid" aria-label="Location QR codes"><article class="qr-card"><img src="https://api.qrserver.com/v1/create-qr-code/?size=560x560&amp;format=svg&amp;margin=20&amp;data=https%3A%2F%2Fzafrirz.github.io%2FTreasury%2Fbanana-gate%2F" alt="QR code for Banana-Gate"><h2>Banana-Gate</h2><a href="/Treasury/banana-gate/">Open page</a></article>
-<article class="qr-card"><img src="https://api.qrserver.com/v1/create-qr-code/?size=560x560&amp;format=svg&amp;margin=20&amp;data=https%3A%2F%2Fzafrirz.github.io%2FTreasury%2Flarge-billboard%2F" alt="QR code for Large-Billboard"><h2>Large-Billboard</h2><a href="/Treasury/large-billboard/">Open page</a></article>
-<article class="qr-card"><img src="https://api.qrserver.com/v1/create-qr-code/?size=560x560&amp;format=svg&amp;margin=20&amp;data=https%3A%2F%2Fzafrirz.github.io%2FTreasury%2Fowl-house%2F" alt="QR code for Owl-House"><h2>Owl-House</h2><a href="/Treasury/owl-house/">Open page</a></article>
-<article class="qr-card"><img src="https://api.qrserver.com/v1/create-qr-code/?size=560x560&amp;format=svg&amp;margin=20&amp;data=https%3A%2F%2Fzafrirz.github.io%2FTreasury%2Ftank%2F" alt="QR code for Tank"><h2>Tank</h2><a href="/Treasury/tank/">Open page</a></article>
-<article class="qr-card"><img src="https://api.qrserver.com/v1/create-qr-code/?size=560x560&amp;format=svg&amp;margin=20&amp;data=https%3A%2F%2Fzafrirz.github.io%2FTreasury%2Fclimbing-wall%2F" alt="QR code for Climbing-Wall"><h2>Climbing-Wall</h2><a href="/Treasury/climbing-wall/">Open page</a></article>
-<article class="qr-card"><img src="https://api.qrserver.com/v1/create-qr-code/?size=560x560&amp;format=svg&amp;margin=20&amp;data=https%3A%2F%2Fzafrirz.github.io%2FTreasury%2Fzimball-lazar-house%2F" alt="QR code for Zimball-Lazar-House"><h2>Zimball-Lazar-House</h2><a href="/Treasury/zimball-lazar-house/">Open page</a></article></section></main></body></html>
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#174b3a">
+  <title>משחק חפש את המטמון</title>
+  <meta name="description" content="עמודי משחק חפש את המטמון למשפחה ולחברים">
+  <link rel="stylesheet" href="/Treasury/styles.css">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script src="/Treasury/app.js" defer></script>
+</head>
+<body>
+  <main class="site-shell">
+    <header class="hero treasure-hero">
+      <p class="eyebrow">TREASURE TRAIL</p>
+      <h1>חפש את המטמון</h1>
+      <p id="active-game" class="active-game">טוען את המשחק…</p>
+      <div class="hero-actions">
+        <a class="button primary" href="/Treasury/print.html?print=1" target="_blank" rel="noopener">הדפסת קודי QR</a>
+        <button id="download-current" class="button secondary" type="button">הורדת קובץ ההגדרות הנוכחי</button>
+      </div>
+    </header>
+
+    <section aria-labelledby="targets-title">
+      <div class="section-heading">
+        <p class="section-kicker">תחנות המשחק</p>
+        <h2 id="targets-title">היעדים הפעילים</h2>
+      </div>
+      <div id="target-grid" class="target-grid" aria-live="polite"></div>
+    </section>
+
+    <details class="admin-panel">
+      <summary>ניהול ועדכון המשחק</summary>
+      <div class="admin-content">
+        <p class="admin-intro">בחרו קובץ Excel במבנה המצורף. הקובץ נבדק לפני שמוצעת אפשרות החלה.</p>
+        <div class="form-grid">
+          <label class="field wide"><span>1. קובץ Excel</span><input id="excel-file" type="file" accept=".xlsx,.xls"></label>
+          <label class="field"><span>2. גיליון רלוונטי</span><select id="sheet-select" disabled><option>יש לבחור קובץ</option></select></label>
+          <label class="field"><span>3. שם המשחק</span><select id="game-select" disabled><option>יש לבחור גיליון תקין</option></select></label>
+        </div>
+        <div id="validation-message" class="notice neutral" role="status">ממתין לקובץ.</div>
+        <div id="changes-summary" class="change-summary" hidden></div>
+        <label class="field token-field">
+          <span>אסימון גישה ל-GitHub</span>
+          <input id="github-token" type="password" autocomplete="off" spellcheck="false" placeholder="Fine-grained token עם הרשאת Contents: Read and write">
+          <small>האסימון משמש רק בזמן ההחלה ואינו נשמר בדפדפן או באתר.</small>
+        </label>
+        <button id="apply-workbook" class="button danger" type="button" disabled>החל את הקובץ על האתר</button>
+        <div id="apply-status" class="apply-status" aria-live="polite"></div>
+      </div>
+    </details>
+  </main>
+</body>
+</html>
+
